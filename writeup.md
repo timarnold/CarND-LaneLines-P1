@@ -7,10 +7,10 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [original]: ./writeup/original.jpg "Original"
-[color-mask]: ./writeup/color-mask.jpg "Color mask"
+[colorMask]: ./writeup/color-mask.jpg "Color mask"
 [canny]: ./writeup/canny.jpg "Canny edge detection"
 [hough]: ./writeup/hough.jpg "Hough transform"
-[region-of-interest]: ./writeup/region-of-interest.jpg "Region of interest"
+[regionOfInterest]: ./writeup/region-of-interest.jpg "Region of interest"
 [processed]: ./writeup/processed.jpg "Processed image"
 
 ---
@@ -25,15 +25,15 @@ Throughout the writeup we will show examples of the results of different image p
 
 ![alt text][original]
 
-Before any manipulation is done to an image, we produce a [hue-saturation-value](https://en.wikipedia.org/wiki/HSL_and_HSV) (HSL) mask of the image, showing which parts of the image matched specified HSL ranges we specified. While we were able to get acceptable results for the main images in the `test_images` folder without this step, we found this extra step was an important part of my solution for the `challenge` video. We will describe the reasons for this below.
+Before any manipulation is done to an image, we produce a [hue-saturation-value](https://en.wikipedia.org/wiki/HSL_and_HSV) (HSL) mask of the image, showing which parts of the image matched specified HSL ranges we specified. While we were able to get acceptable results for the main images in the `test_images` folder without this step, we found this extra step was an important part of my solution for the `challenge` video, to remove extraneous detected lines that did not correspond to lane lines. We used HSL instead of RGB as a filter because using hue and lightness to define ranges of colors corresponding to orange and white lane lines, respectively, was easier than using RGB ranges.
 
-![alt text][color-mask]
+![alt text][colorMask]
 
 Similar to the hard-coded (in the lectures and quizzes) inclusion region, my HSL mask allows edge-finding and ultimately lane line finding only in specific regions of the image. The regions correspond to orange or white lane lines, or colors similar to these lane lines. HSL specifically (as opposed to the more common RGB representation of an image's colors) was used because specifying a hue or brightness ("value") range was more effective at locating lane lines than specifying RGB ranges would have been. See discussion [here](https://en.wikipedia.org/wiki/HSL_and_HSV).
 
 After constructing an HSL mask for later use, we defined a hard-coded "region of interest" to limit what region of the image was used to find edges for lane line detection. This region was roughly a trapezoid with the angled sides roughly parallel to lane lines, the bottom side near the bottom of the image, and the parallel smaller top side about halfway up the image around the level of the horizon. Like the HSL mask, this region would define an area of the image from which edges would be detected that ultimately informed the parameters of the detected lane lines.
 
-![alt text][region-of-interest]
+![alt text][regionOfInterest]
 
 Next, we perform [Canny edge detection](https://en.wikipedia.org/wiki/Canny_edge_detector) over the whole image. This process finds the edges in an image. The parameters of the Canny edge detector were adjusted so that the lane lines apparent in the image were easily visible, while attempting to minimize extraneous edges in the region of interest / road area.
 
